@@ -2,14 +2,14 @@ from time import time
 import cv2
 import numpy as np
 
+# Record time so time elapsed may be presented.
 start_time = time()
-true_px = 0
+# Import image and cvt to gray.
 img = cv2.imread('images/edge_stacks/5ml/5.32.tif')
-# gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-# h, w = gray.shape
-h, w, c = img.shape
-
+# Record height and width of img.
+h, w, _ = img.shape
+# Initialize empty list for coordinates to be saved.
 color_coords = []
 
 
@@ -18,14 +18,14 @@ for x in range(1, w - 1):
         if np.any(img[y, x] > 13):
             color_coords.append([y, x])
 
-end_time = time()
+end_time = time()  # Record process end time.
 
 
-def x_coordinate(item):
+def x_coordinate(item):  # Returns x coordinate from passed list.
     return item[1]
 
 
-def y_coordinate(item):
+def y_coordinate(item):  # Returns y coordinate from passed list.
     return item[0]
 
 
