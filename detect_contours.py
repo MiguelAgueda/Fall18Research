@@ -7,8 +7,13 @@ ap.add_argument("-i", "--image",
                 type=str,
                 required=True,
                 help="System path to image file.")
+ap.add_argument("-w", "--write",
+                type=str,
+                required=False,
+                help="Path to file for saved image.")
 args = vars(ap.parse_args())
 # Import image with cv2, copy image, and convert image to gray.
+destination = args['write']
 img = cv2.imread(args["image"])
 orig = img.copy()
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -28,12 +33,18 @@ for contour in contours:
     # Bounding rect.
     x, y, w, h = cv2.boundingRect(contour)
 
-    if w > 500 and h > 500:
+    if w > 100 and h > 100:
         cropped_img = img[y:y+h, x:x+w]
         # Threshold the now cropped image
         _, thresh_cropped_img = cv2.threshold(cropped_img, 40, 255, cv2.THRESH_BINARY)
         cv2.imshow("Threshold: Cropped Image", thresh_cropped_img)
         cv2.imshow("Cropped Image", cropped_img)
+        try:
+            cv2.imwrite(destination, cropped_img)
+        except cv2.error:
+            print("Image not written to disk.")
+            continue
+
         cv2.waitKey(0)
 
     if len(approx) > 0:

@@ -34,6 +34,8 @@ while True:
 
     canny_1 = cv2.getTrackbarPos('Canny_1', 'image')
     canny_2 = cv2.getTrackbarPos('Canny_2', 'image')
-    img = cv2.Canny(gray, canny_1, 0)
+    edged = cv2.Canny(gray, canny_1, 0)
+    _, contours, _ = cv2.findContours(edged.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    contours = sorted(contours, key=cv2.contourArea, reverse=True)[:10]
 
 cv2.destroyAllWindows()
