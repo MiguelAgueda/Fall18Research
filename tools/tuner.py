@@ -14,9 +14,9 @@ def binary_thresh(image):
         k1 = cv2.waitKey(1)
         binary_thresh_val = cv2.getTrackbarPos('Threshold Value', 'Binary Threshold')
         _, binary_thresh_img = cv2.threshold(image,
-                                         binary_thresh_val,
-                                         255,
-                                         cv2.THRESH_BINARY)
+                                             binary_thresh_val,
+                                             255,
+                                             cv2.THRESH_BINARY)
         cv2.imshow('Binary Threshold', binary_thresh_img)
 
 
@@ -69,16 +69,58 @@ def to_zero_thresh(image):
             continue
 
 
+def canny(image):
+    img = image
+    # gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    blur = cv2.bilateralFilter(img, 11, 17, 17)
+    while True:
+        canny_min = 0
+        canny_max = 1
+        edged = cv2.Canny(blur, canny_min, canny_max)
+        # Find contours in image, keep largest.
+        _, contours, _ = cv2.findContours(edged.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        contours = sorted(contours, key=cv2.contourArea, reverse=True)[:10]
+        cv2.namedWindow('canny')
+        cv2.createTrackbar('canny_min', 'canny', 0, 5000, nothing)
+        cv2.createTrackbar('canny_max', 'canny', 0, 5000, nothing)
+
+        # while True:
+        canny_min = cv2.getTrackbarPos('canny_min', 'canny')
+        canny_max = cv2.getTrackbarPos('canny_max', 'canny')
+        for contour in contours:
+            # Approximate contour
+            perimeter = cv2.arcLength(contour, True)
+            approx = cv2.approxPolyDP(contour, 0.000001 * perimeter, True)
+            # Bounding rect.
+            x, y, w, h = cv2.boundingRect(contour)
+
+            if w > 100 and h > 100:
+                cropped_img = img[y:y + h, x:x + w]
+                # Threshold the now cropped image
+                _, thresh_cropped_img = cv2.threshold(cropped_img,
+                                                      40,
+                                                      255,
+                                                      cv2.THRESH_BINARY)
+
+            # if len(approx) > 0:
+            #     contour_area = cv2.contourArea(contour)
+            #     egg_contour = approx
+            #     print(contour_area)
+            #     break
+            cv2.drawContours(img, [approx], -1, (0, 255, 0), 3)
+            cv2.imshow('canny', img)
+
+
 def cli_menu(image):
     running = True
     while running:
         error = "Invalid input"
         choice = input("""
         \n\tThis application is designed to help you choose a threshold
-        value for image processing. Choose your desired threshold process(Default = 1).
-        To exit image view at any time, press esc.
+        \tvalue for image processing. Choose your desired threshold process(Default = 1).
+        \tTo exit image view at any time, press esc.
         \n\t1: Binary Threshold\n\t2: Gaussian Threshold\n\t3: Mean Threshold
-        4: Threshold To Zero
+        \t4: Threshold To Zero\n\t5: Canny
         \n\t9: Quit\n\n\t> """)
         if choice == '1':
             binary_thresh(image)
@@ -88,6 +130,8 @@ def cli_menu(image):
             mean_thresh(image)
         elif choice == '4':
             to_zero_thresh(image)
+        elif choice == '5':
+            canny(image)
         elif choice == '9':
             running = False
         else:

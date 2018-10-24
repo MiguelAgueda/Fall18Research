@@ -20,7 +20,7 @@ destination = args['destination']
 file_type = args['file_type']
 
 for filename in os.listdir(path):
-    file_first_four = filename[:3] + file_type
+    file_first_four = filename[:4] + file_type
     src = path + filename
     dst = destination + file_first_four
     os.rename(src, dst)
