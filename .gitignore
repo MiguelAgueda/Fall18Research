@@ -1,5 +1,4 @@
 images/*
 *.json
-.gitignore
-.vscode
+.vscode/
 
