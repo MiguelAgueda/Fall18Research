@@ -71,7 +71,6 @@ def to_zero_thresh(image):
 
 def canny(image):
     img = image
-    # gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     blur = cv2.bilateralFilter(img, 11, 17, 17)
     while True:
         canny_min = 0
@@ -102,11 +101,6 @@ def canny(image):
                                                       255,
                                                       cv2.THRESH_BINARY)
 
-            # if len(approx) > 0:
-            #     contour_area = cv2.contourArea(contour)
-            #     egg_contour = approx
-            #     print(contour_area)
-            #     break
             cv2.drawContours(img, [approx], -1, (0, 255, 0), 3)
             cv2.imshow('canny', img)
 

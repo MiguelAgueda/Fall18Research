@@ -24,32 +24,32 @@ for filename in os.listdir(path):
     contours = sorted(contours, key=cv2.contourArea, reverse=True)[:1]
 
     for contour in contours:
-        # Approximate contour
-        perimeter = cv2.arcLength(contour, True)
+        perimeter = cv2.arcLength(contour, True)  # Approximate contour
         approx = cv2.approxPolyDP(contour, 0.000001 * perimeter, True)
-        # Bounding rect.
-        x, y, w, h = cv2.boundingRect(contour)
-        cropped_img = img[y:y + h, x:x + w]
+        x, y, w, h = cv2.boundingRect(contour)  # Get dimensions of a bounding rectangle.
+        cropped_img = img[y:y + h, x:x + w]  # Crop image using bounding rectangle.
 
     # Start the counting of pixels to provide white to black px ratio
         white_px_count = 0
         image_area = w * h
-        contour_area = cv2.contourArea(contour)
-        print(contour_area)
+        contour_area = cv2.contourArea(contour)  # Giving inaccurate values.
+        # print(contour_area)  # Print area of contour to console.
         _, to_zero_inv_img = cv2.threshold(cropped_img,
                                            170, 255,
-                                           cv2.THRESH_TOZERO_INV)
-        _, to_zero_thresh_img = cv2.threshold(to_zero_inv_img, 32, 255, cv2.THRESH_TOZERO)
-        thresh_cropped_height, thresh_cropped_width, _ = to_zero_thresh_img.shape
+                                           cv2.THRESH_TOZERO_INV)  # Apply an inverse to-zero threshold to image.
+        _, to_zero_thresh_img = cv2.threshold(to_zero_inv_img, 32, 255, cv2.THRESH_TOZERO)  # Apply a to-zero threshold to image.
+        thresh_cropped_height, thresh_cropped_width, _ = to_zero_thresh_img.shape  # Get size of image.
 
+        # Loop through pixels in image and count the ones which are white.
         for x in range(1, thresh_cropped_width - 1):
             for y in range(1, thresh_cropped_height - 1):
                 if np.any(to_zero_thresh_img[y, x] > 35):
                     white_px_count += 1
 
-    white_total_px_ratio = white_px_count / image_area
-    white_total_px_percentage = white_total_px_ratio * 100
+    white_total_px_ratio = white_px_count / image_area  # Math
+    white_total_px_percentage = white_total_px_ratio * 100  # Math
 
+    # Print collected data to console.
     print("""\n
     Image: {name}
     Number of white pixels: {white_px} px
