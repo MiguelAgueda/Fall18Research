@@ -116,12 +116,12 @@ def cli_menu(image):
     while running:
         error = "Invalid input"
         choice = input("""
-        \n\tThis application is designed to help you choose a threshold
-        \tvalue for image processing. Choose your desired threshold process(Default = 1).
-        \tTo exit image view at any time, press esc.
-        \n\t1: Binary Threshold\n\t2: Gaussian Threshold\n\t3: Mean Threshold
-        \t4: Threshold To Zero\n\t5: Canny
-        \n\t9: Quit\n\n\t> """)
+        \n\t\tThis application is designed to help you choose a threshold
+        value for image processing. Choose your desired threshold process(Default = 1).
+        To exit image view at any time, press esc.
+        \n\t\t1: Binary Threshold\n\t\t2: Gaussian Threshold\n\t\t3: Mean Threshold
+        4: Threshold To Zero\n\t\t5: Canny
+        \n\t\t9: Quit\n\n\t\t> """)
         if choice == '1':
             binary_thresh(image)
         elif choice == '2':
@@ -133,17 +133,19 @@ def cli_menu(image):
         elif choice == '5':
             canny(image)
         elif choice == '9':
+            print("Exiting Program")
             running = False
         else:
             print(error)
 
 
-ap = argparse.ArgumentParser()
-parser = argparse.ArgumentParser()
-ap.add_argument('-i', '--image',
-                type=str,
-                required=False,
-                help="Path to an image.")
-args = vars(ap.parse_args())
-image = cv2.imread(args['image'], 0)
+# ap = argparse.ArgumentParser()
+# parser = argparse.ArgumentParser()
+# ap.add_argument('-i', '--image',
+#                 type=str,
+#                 required=False,
+#                 help="Path to an image.")
+# args = vars(ap.parse_args())
+# image = cv2.imread(args['image'], 0)
+image = cv2.imread("C:\\Users\\migue\\Documents\\PyCharmProjects\\fall18research\\images\\split_5ml\\5.12.3.png")
 cli_menu(image)

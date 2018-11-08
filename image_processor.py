@@ -4,13 +4,14 @@ import argparse
 import numpy as np
 
 
-ap = argparse.ArgumentParser()
-ap.add_argument('-d', '--directory',
-                type=str,
-                help="Path to directory with files.",
-                required=True)
-args = vars(ap.parse_args())
-path = args['directory']
+# ap = argparse.ArgumentParser()
+# ap.add_argument('-d', '--directory',
+#                 type=str,
+#                 help="Path to directory with files.",
+#                 required=True)
+# args = vars(ap.parse_args())
+# path = args['directory']
+path = "C:\\Users\\migue\\Documents\\PyCharmProjects\\fall18research\\images\\split_5ml\\"
 
 for filename in os.listdir(path):
     src = path + filename
