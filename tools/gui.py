@@ -1,8 +1,7 @@
 from tkinter import *
-from tkinter import ttk
 from tkinter.filedialog import askopenfilenames
 from PIL import Image, ImageTk
-from circle import Circle
+from old_programs.circle import Circle
 
 
 global bg_color, max_size
